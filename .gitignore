@@ -1,7 +1,8 @@
 # Saved models
 /saved*
 *.pth
-
+rb-env
+dataset/
 .vscode/
 .idea/
 *.pyc
@@ -13,3 +14,5 @@ saved/
 docs/build/
 wandb/*
 /ray_log*
+output/
+.DS_Store

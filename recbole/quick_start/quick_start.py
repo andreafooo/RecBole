@@ -48,6 +48,10 @@ def run(
     port="5678",
     group_offset=0,
 ):
+    if dist.is_available() and world_size > 0:
+        if not dist.is_initialized():
+            dist.init_process_group(backend='gloo', init_method='tcp://{}:{}'.format(ip, port), rank=0, world_size=world_size)
+
     if nproc == 1 and world_size <= 0:
         res = run_recbole(
             model=model,
@@ -61,8 +65,6 @@ def run(
             world_size = nproc
         import torch.multiprocessing as mp
 
-        # Refer to https://discuss.pytorch.org/t/problems-with-torch-multiprocess-spawn-and-simplequeue/69674/2
-        # https://discuss.pytorch.org/t/return-from-mp-spawn/94302/2
         queue = mp.get_context("spawn").SimpleQueue()
 
         config_dict = config_dict or {}
@@ -87,7 +89,6 @@ def run(
             join=True,
         )
 
-        # Normally, there should be only one item in the queue
         res = None if queue.empty() else queue.get()
     return res
 

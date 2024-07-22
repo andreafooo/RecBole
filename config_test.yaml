@@ -1,0 +1,30 @@
+
+data_path: /Users/andreaforster/dev/thesis/Poi_Recommender/RecBole/dataset/
+dataset: yelp_sample
+field_separator: "\t"
+USER_ID_FIELD: user_id
+ITEM_ID_FIELD: item_id
+RATING_FIELD: rating
+TIME_FIELD: timestamp
+show_progress: false
+
+load_col:
+    inter: [user_id, item_id, timestamp]
+    user: [user_id]
+    item: [item_id]
+
+epochs: 5
+learning_rate: 0.01
+batch_size: 256
+user_inter_num_interval: "[0,inf)"
+item_inter_num_interval: "[0,inf)"
+filter_inter_by_user_or_item: false
+neg_sampling:
+    uniform: 1
+eval_args:
+    split: {'RS': [0.65, 0.15, 0.2]}
+    group_by: user
+    order: TO
+metrics: ['Recall', 'MRR', 'NDCG', 'Hit', 'Precision', 'MAP', 'GiniIndex', 'TailPercentage']
+topk: 10
+valid_metric: NDCG@10
