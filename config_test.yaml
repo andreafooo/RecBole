@@ -1,10 +1,10 @@
 
 data_path: /Users/andreaforster/dev/thesis/Poi_Recommender/RecBole/dataset/
-dataset: yelp_sample
+dataset: snowcard_sample
 field_separator: "\t"
 USER_ID_FIELD: user_id
 ITEM_ID_FIELD: item_id
-RATING_FIELD: rating
+RATING_FIELD: checkin_count
 TIME_FIELD: timestamp
 show_progress: false
 
@@ -12,9 +12,8 @@ load_col:
     inter: [user_id, item_id, timestamp]
     user: [user_id]
     item: [item_id]
-
-epochs: 5
-learning_rate: 0.01
+epochs: 100
+learning_rate: 0.001
 batch_size: 256
 user_inter_num_interval: "[0,inf)"
 item_inter_num_interval: "[0,inf)"
