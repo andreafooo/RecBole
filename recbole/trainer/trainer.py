@@ -129,7 +129,9 @@ class Trainer(AbstractTrainer):
         self.enable_amp = config["enable_amp"]
         self.enable_scaler = torch.cuda.is_available() and config["enable_scaler"]
         ensure_dir(self.checkpoint_dir)
-        saved_model_file = "{}-{}.pth".format(self.config["model"], get_local_time())
+        saved_model_file = "{}-{}-{}.pth".format(
+            self.config["dataset"], self.config["model"], get_local_time()
+        )
         self.saved_model_file = os.path.join(self.checkpoint_dir, saved_model_file)
         self.weight_decay = config["weight_decay"]
 
@@ -899,15 +901,19 @@ class DecisionTreeTrainer(AbstractTrainer):
         # model saved
         self.checkpoint_dir = config["checkpoint_dir"]
         ensure_dir(self.checkpoint_dir)
-        temp_file = "{}-{}-temp.pth".format(self.config["model"], get_local_time())
+        temp_file = "{}-{}-{}-temp.pth".format(
+            self.config["dataset"], self.config["model"], get_local_time()
+        )
         self.temp_file = os.path.join(self.checkpoint_dir, temp_file)
 
-        temp_best_file = "{}-{}-temp-best.pth".format(
-            self.config["model"], get_local_time()
+        temp_best_file = "{}-{}-{}-temp-best.pth".format(
+            self.config["dataset"], self.config["model"], get_local_time()
         )
         self.temp_best_file = os.path.join(self.checkpoint_dir, temp_best_file)
 
-        saved_model_file = "{}-{}.pth".format(self.config["model"], get_local_time())
+        saved_model_file = "{}-{}-{}.pth".format(
+            self.config["dataset"], self.config["model"], get_local_time()
+        )
         self.saved_model_file = os.path.join(self.checkpoint_dir, saved_model_file)
 
         self.stopping_step = config["stopping_step"]
