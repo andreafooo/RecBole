@@ -17,3 +17,4 @@ wandb/*
 output/
 .DS_Store
 config/
+globals.py
