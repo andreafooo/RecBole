@@ -1,4 +1,4 @@
-data_path: /Users/andreaforster/dev/thesis/Poi_Recommender/RecBole/dataset/
+data_path: /dataset/
 dataset: brightkite_sample
 field_separator: "\t"
 USER_ID_FIELD: user_id
@@ -13,7 +13,6 @@ load_col:
     item: [item_id]
 epochs: 200
 learning_rate: 0.001
-batch_size: 256
 user_inter_num_interval: "[0,inf)"
 item_inter_num_interval: "[0,inf)"
 filter_inter_by_user_or_item: false

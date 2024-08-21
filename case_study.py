@@ -8,8 +8,9 @@ from recbole.utils.case_study import full_sort_topk, full_sort_scores
 from recbole.quick_start import load_data_and_model
 import pandas as pd
 import json
+from globals import OUTPUT_DIR_PREFIX
 
-OUTPUT_DIR = "/Volumes/Forster Neu/Masterarbeit Data/recommendations_uncleaned/"
+OUTPUT_DIR = f"{OUTPUT_DIR_PREFIX}recommendations_uncleaned/"
 
 
 model_file = "gowalla_sample-SimpleX-Aug-19-2024_12-21-52.pth"
