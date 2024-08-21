@@ -10,8 +10,7 @@
 
 import argparse
 import os
-import numpy as np
-import json
+
 
 from recbole.trainer import HyperTuning
 from recbole.quick_start import objective_function
