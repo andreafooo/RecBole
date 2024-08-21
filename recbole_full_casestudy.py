@@ -6,9 +6,13 @@ import json
 import os
 import yaml
 import glob
+import numpy as np
+from recbole.trainer import HyperTuning
+from recbole.quick_start import objective_function
 
 
-config = "config_test.yaml"
+# config = "config_test.yaml"
+config = "config/brightkite_sample/BPR/config_test.yaml"
 
 with open(config, "r") as file:
     config_dict = yaml.safe_load(file)

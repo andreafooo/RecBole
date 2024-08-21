@@ -11,6 +11,7 @@
 recbole.quick_start
 ########################
 """
+
 import logging
 import sys
 import torch.distributed as dist
@@ -18,6 +19,7 @@ from collections.abc import MutableMapping
 from logging import getLogger
 
 from ray import tune
+from ray import train
 
 from recbole.config import Config
 from recbole.data import (
@@ -50,7 +52,12 @@ def run(
 ):
     if dist.is_available() and world_size > 0:
         if not dist.is_initialized():
-            dist.init_process_group(backend='gloo', init_method='tcp://{}:{}'.format(ip, port), rank=0, world_size=world_size)
+            dist.init_process_group(
+                backend="gloo",
+                init_method="tcp://{}:{}".format(ip, port),
+                rank=0,
+                world_size=world_size,
+            )
 
     if nproc == 1 and world_size <= 0:
         res = run_recbole(
@@ -221,7 +228,7 @@ def objective_function(config_dict=None, config_file_list=None, saved=True):
     )
     test_result = trainer.evaluate(test_data, load_best_model=saved)
 
-    tune.report(**test_result)
+    train.report(**test_result)
     return {
         "model": model_name,
         "best_valid_score": best_valid_score,

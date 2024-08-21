@@ -1,13 +1,12 @@
-
 data_path: /Users/andreaforster/dev/thesis/Poi_Recommender/RecBole/dataset/
-dataset: yelp_sample
+dataset: brightkite_sample
 field_separator: "\t"
 USER_ID_FIELD: user_id
 ITEM_ID_FIELD: item_id
 RATING_FIELD: checkin_count
 TIME_FIELD: timestamp
 show_progress: false
-
+model : SimpleX
 load_col:
     inter: [user_id, item_id, timestamp]
     user: [user_id]
@@ -18,7 +17,7 @@ batch_size: 256
 user_inter_num_interval: "[0,inf)"
 item_inter_num_interval: "[0,inf)"
 filter_inter_by_user_or_item: false
-neg_sampling:
+train_neg_sample_args:
     uniform: 1
 eval_args:
     split: {'RS': [0.65, 0.15, 0.2]}
