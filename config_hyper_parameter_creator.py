@@ -6,9 +6,10 @@ from recbole.quick_start import objective_function
 hyperopt = True
 
 
-base_config_file_path = "config_test.yaml"
+base_config_file_path = "config_test_new.yaml"
 with open(base_config_file_path, "r") as file:
     base_config = yaml.safe_load(file)
+
 
 datasets = [
     "brightkite_sample",
@@ -18,7 +19,7 @@ datasets = [
     "yelp_sample",
 ]
 
-models = ["BPR", "ItemKNN", "SimpleX"]
+models = ["BPR", "SimpleX", "ItemKNN"]
 
 
 def hyperopt_tune(config_file_path, params_file, output_file):

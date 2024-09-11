@@ -11,15 +11,26 @@ from globals import (
 )  # TO-DO: create a globals.py file with OUTPUT_DIR_PREFIX = "/the/path/to/your/output/directory/"
 
 datasets = [
-    "brightkite_sample",
-    "gowalla_sample",
-    "foursquaretky_sample",
-    "snowcard_sample",
     "yelp_sample",
 ]
 
+models = ["SimpleX", "ItemKNN"]
 
-models = ["BPR", "ItemKNN", "SimpleX"]
+
+def extract_test_data(model_file):
+    # Load model and data
+    config, model, dataset, train_data, valid_data, test_data = load_data_and_model(
+        model_file
+    )
+
+    print("Extracting test data...")
+
+    # Iterate over the test_data DataLoader to get user-item interactions
+    for batch_data in test_data:
+        print("Batch data structure:", batch_data)
+
+
+# Now test_interactions will contain the user-item interactions from the test data.
 
 
 def find_newest_model(directory):
@@ -63,7 +74,8 @@ def run_configurations(config):
 
     # Read user IDs from CSV
     df = pd.read_csv(
-        f"dataset/{config_dict['dataset']}/{config_dict['dataset']}.inter", sep="\t"
+        f"dataset/{config_dict['dataset']}/{config_dict['dataset']}.test.inter",
+        sep="\t",
     )
     user_ids = list(set(df["user_id:token"].values.tolist()))
 
@@ -71,8 +83,6 @@ def run_configurations(config):
     config, model, dataset, train_data, valid_data, test_data = load_data_and_model(
         model_file=f"saved/{model_file}",
     )
-
-    print(f"model: {model}, dataset: {dataset}")
 
     error_count = 0
     recommendations = {}
@@ -147,15 +157,6 @@ def run_configurations(config):
 
     with open(f"{FINAL_OUTPUT_DIR}general_evaluation.json", "w") as f:
         json.dump(output_dict, f, indent=4)
-
-    # with open(f"{FINAL_OUTPUT_DIR}train_data.json", "w") as f:
-    #     json.dump(train_data, f, indent=4)
-
-    # with open(f"{FINAL_OUTPUT_DIR}valid_data.json", "w") as f:
-    #     json.dump(valid_data, f, indent=4)
-
-    # with open(f"{FINAL_OUTPUT_DIR}test_data.json", "w") as f:
-    #     json.dump(test_data, f, indent=4)
 
 
 if __name__ == "__main__":
