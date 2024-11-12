@@ -14,42 +14,29 @@ models = ["BPR"]
 
 
 def extract_test_data(model_file):
-    # Load model and data
     config, model, dataset, train_data, valid_data, test_data = load_data_and_model(
         model_file
     )
 
     print("Extracting test data...")
 
-    # Iterate over the test_data DataLoader to get user-item interactions
     for batch_data in test_data:
         print("Batch data structure:", batch_data)
 
 
-# Now test_interactions will contain the user-item interactions from the test data.
-
-
 def find_newest_model(directory):
-    # Get list of all files in the directory
+    """If there are several model files in the directory, this function will return the newest one."""
     files = glob.glob(os.path.join(directory, "*"))
-
-    # Check if the directory is empty
     if not files:
         return None
 
-    # Find the newest file based on creation time
     newest_file = max(files, key=os.path.getctime)
     return newest_file
 
 
 def run_configurations(config):
-    ### Run the RecBole model with specified configurations
     output_dict = run_recbole(config_file_list=[config])
-
-    ### Generating the recommendation list + other metadata
-    # Directory to scan
     directory = "saved/"
-    # Find the newest model file
     newest_model_file = find_newest_model(directory)
 
     if newest_model_file:
@@ -70,14 +57,12 @@ def run_configurations(config):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    # Read user IDs from CSV
     df = pd.read_csv(
         f"dataset/{config_dict['dataset']}/{config_dict['dataset']}.test.inter",
         sep="\t",
     )
     user_ids = list(set(df["user_id:token"].values.tolist()))
 
-    # Load model and data
     config, model, dataset, train_data, valid_data, test_data = load_data_and_model(
         model_file=f"saved/{model_file}",
     )
@@ -120,7 +105,6 @@ def run_configurations(config):
             #     score[0, dataset.token2id(dataset.iid_field, ["242", "302"])]
             # )  # score of item ['242', '302'] for user '196'.
 
-            # Store recommendations in the desired format
             recommendations[uid] = [
                 {"item_id": item_id, "score": score}
                 for item_id, score in zip(
@@ -134,7 +118,6 @@ def run_configurations(config):
             error_count += 1
             continue
 
-    # Print error rate
     print(
         f"The error count was {error_count}, which is {error_count/len(user_ids)*100:.2f}% of the total users."
     )
@@ -146,7 +129,6 @@ def run_configurations(config):
     if not os.path.exists(FINAL_OUTPUT_DIR):
         os.makedirs(FINAL_OUTPUT_DIR)
 
-    # Save the recommendations to a JSON file
     with open(f"{FINAL_OUTPUT_DIR}top_k_recommendations.json", "w") as f:
         json.dump(recommendations, f, indent=4)
 
@@ -158,7 +140,7 @@ def run_configurations(config):
 
 
 if __name__ == "__main__":
-    # config = "config_test.yaml"
+    # config = "config_test.yaml" # To-Do: add if clause if there is no specific config_test because they are only created after hyperopt
     for dataset in datasets:
         for model in models:
             config = f"config/{dataset}/{model}/config_test.yaml"

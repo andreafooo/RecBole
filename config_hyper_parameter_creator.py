@@ -42,15 +42,12 @@ def hyperopt_tune(config_file_path, params_file, output_file):
 
 for dataset in datasets:
     for model in models:
-        # Create the directory path if it doesn't exist
         config_dir = f"config/{dataset}/{model}"
-        os.makedirs(config_dir, exist_ok=True)  # Creates all intermediate directories
+        os.makedirs(config_dir, exist_ok=True)
 
-        # Update the base config with the specific model and dataset
         base_config["model"] = model
         base_config["dataset"] = dataset
 
-        # Write the updated config to a new file in the created directory
         config_file_path = os.path.join(config_dir, "config_test.yaml")
         result_file_path = os.path.join(config_dir, "hyper.result")
         with open(config_file_path, "w") as file:
