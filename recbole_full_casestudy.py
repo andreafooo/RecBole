@@ -6,15 +6,11 @@ import json
 import os
 import yaml
 import glob
-from globals import (
-    OUTPUT_DIR_PREFIX,
-)  # TO-DO: create a globals.py file with OUTPUT_DIR_PREFIX = "/the/path/to/your/output/directory/"
+from globals import BASE_DIR
 
-datasets = [
-    "yelp_sample",
-]
+datasets = ["yelp_sample", "snowcard_sample"]
 
-models = ["SimpleX", "ItemKNN"]
+models = ["BPR"]
 
 
 def extract_test_data(model_file):
@@ -67,7 +63,9 @@ def run_configurations(config):
     with open(config, "r") as file:
         config_dict = yaml.safe_load(file)
 
-    OUTPUT_DIR = f"{OUTPUT_DIR_PREFIX}{config_dict['dataset'].split('_')[0]}_dataset/recommendations/"
+    OUTPUT_DIR = (
+        f"{BASE_DIR}{config_dict['dataset'].split('_')[0]}_dataset/recommendations/"
+    )
 
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
@@ -94,7 +92,7 @@ def run_configurations(config):
 
             # Compute top-k recommendations
             topk_score, topk_iid_list = full_sort_topk(
-                uid_series, model, test_data, k=15, device=config["device"]
+                uid_series, model, test_data, k=150, device=config["device"]
             )
 
             if topk_score is None or topk_iid_list is None:
